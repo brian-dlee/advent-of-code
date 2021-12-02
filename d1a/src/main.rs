@@ -1,7 +1,7 @@
 use y2021::utils;
 
 fn main() {
-    println!("Starting Day 1");
+    println!("Starting Day 1a");
 
     let contents = utils::read_input("../input/d1a/input.txt");
     let numbers = utils::transform_lines_to_integers(contents.as_str());
