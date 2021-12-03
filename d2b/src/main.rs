@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use y2021::utils;
 use y2021::submarine;
 
@@ -5,7 +6,7 @@ fn main() {
     println!("Starting Day 2b");
 
     let contents = utils::read_input("../input/d2b/input.txt");
-    let commands: Vec<submarine::SubmarineCommand> = contents.lines().map(submarine::SubmarineCommand::parse)
+    let commands: Vec<submarine::SubmarineCommand> = contents.lines().map(submarine::SubmarineCommand::from_str)
         .map(|r| r.unwrap()).collect();
     let mut position = submarine::Position::zero();
     let mut aim = 0;

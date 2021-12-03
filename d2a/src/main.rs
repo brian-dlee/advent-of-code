@@ -1,44 +1,14 @@
+use std::str::FromStr;
 use y2021::utils;
-
-#[derive(Debug, Clone)]
-struct CommandParseError;
-
-struct Position {
-    horizontal: i32,
-    depth: i32,
-}
-
-impl Position {
-    fn zero() -> Position {
-        Position {
-            horizontal: 0,
-            depth: 0,
-        }
-    }
-}
-
-struct SubmarineCommand(String, i32);
-
-impl SubmarineCommand {
-    fn parse(text: &str) -> Result<SubmarineCommand, CommandParseError> {
-        match text.trim().split_whitespace().collect::<Vec<&str>>() {
-            x if x.len() == 2 => {
-                x[1].parse::<i32>()
-                    .map(|n| SubmarineCommand(x[0].to_string(), n))
-                    .map_err(|_| CommandParseError)
-            },
-            _ => Err(CommandParseError),
-        }
-    }
-}
+use y2021::submarine;
 
 fn main() {
     println!("Starting Day 2a");
 
-    let contents = utils::read_input("../input/d2a/input.txt");
-    let commands: Vec<SubmarineCommand> = contents.lines().map(SubmarineCommand::parse)
+    let contents = utils::read_input("../input/d2b/input.txt");
+    let commands: Vec<submarine::SubmarineCommand> = contents.lines().map(submarine::SubmarineCommand::from_str)
         .map(|r| r.unwrap()).collect();
-    let mut position = Position::zero();
+    let mut position = submarine::Position::zero();
 
     println!("Following commands to final position.");
 
