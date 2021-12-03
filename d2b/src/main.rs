@@ -14,14 +14,13 @@ fn main() {
     println!("Following commands to final position.");
 
     for command in commands {
-        match command.0.as_str() {
-            "forward" => {
+        match command.0 {
+            submarine::Direction::Forward => {
                 position.horizontal += command.1;
                 position.depth += command.1 * aim;
             },
-            "up" => aim -= command.1,
-            "down" => aim += command.1,
-            _ => panic!("Unknown direction supplied: {}", command.0),
+            submarine::Direction::Up => aim -= command.1,
+            submarine::Direction::Down => aim += command.1,
         }
     }
 

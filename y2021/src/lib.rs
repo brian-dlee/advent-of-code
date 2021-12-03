@@ -20,6 +20,7 @@ pub mod submarine {
     pub enum CommandParseError {
         InvalidFormat,
         InvalidNumericValue(ParseIntError),
+        InvalidDirection(String),
     }
 
     pub struct Position {
@@ -36,7 +37,26 @@ pub mod submarine {
         }
     }
 
-    pub struct SubmarineCommand(pub String, pub i32);
+    pub enum Direction {
+        Down,
+        Forward,
+        Up,
+    }
+
+    impl std::str::FromStr for Direction {
+        type Err = CommandParseError;
+
+        fn from_str(s: &str) -> Result<Self, Self::Err> {
+            match s {
+                "forward" => Ok(Direction::Forward),
+                "up" => Ok(Direction::Up),
+                "down" => Ok(Direction::Down),
+                d => Err(CommandParseError::InvalidDirection(d.to_string())),
+            }
+        }
+    }
+
+    pub struct SubmarineCommand(pub Direction, pub i32);
 
     impl std::str::FromStr for SubmarineCommand {
         type Err = CommandParseError;
@@ -44,9 +64,9 @@ pub mod submarine {
         fn from_str(text: &str) -> Result<Self, Self::Err> {
             match text.trim().split_whitespace().collect::<Vec<&str>>() {
                 x if x.len() == 2 => {
-                    x[1].parse::<i32>()
-                        .map(|n| SubmarineCommand(x[0].to_string(), n))
-                        .map_err(|e| CommandParseError::InvalidNumericValue(e))
+                    let direction = Direction::from_str(x[0])?;
+                    let value = x[1].parse::<i32>().map_err(|e| CommandParseError::InvalidNumericValue(e))?;
+                    Ok(SubmarineCommand(direction, value))
                 },
                 _ => Err(CommandParseError::InvalidFormat),
             }
