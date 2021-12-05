@@ -1,12 +1,12 @@
 use std::str::FromStr;
-use y2021::diagnostic_reading::DiagnosticReading;
+use y2021::grid::Grid;
 use y2021::utils;
 use y2021::submarine;
 
 fn main() {
     println!("Starting Day 3a");
 
-    let report = DiagnosticReading::new(
+    let report = Grid::new(
         utils::read_input("./input/input.txt").lines().map(|l| l.to_string()).collect::<Vec<String>>()
     );
 

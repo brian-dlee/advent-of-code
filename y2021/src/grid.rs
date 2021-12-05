@@ -2,7 +2,7 @@ use std::cmp::max;
 use std::collections::HashSet;
 
 #[derive(Clone, Debug)]
-pub struct DiagnosticReading {
+pub struct Grid {
     pub rows: usize,
     pub cols: usize,
     data: Vec<Vec<char>>,
@@ -13,7 +13,7 @@ pub struct Selection {
     pub remove: HashSet<usize>,
 }
 
-impl DiagnosticReading {
+impl Grid {
     pub fn get(&self, x: usize, y: usize) -> char {
         assert!(y >= 0 && y < self.data.len());
         assert!(x >= 0 && x < self.data[y].len());
@@ -21,13 +21,13 @@ impl DiagnosticReading {
         self.data[y][x]
     }
 
-    pub fn without_rows<'a, I>(&mut self, rows: I) -> DiagnosticReading where I: Iterator<Item=&'a usize> {
+    pub fn without_rows<'a, I>(&mut self, rows: I) -> Grid where I: Iterator<Item=&'a usize> {
         let removals: HashSet<&usize> = HashSet::from_iter(rows);
         let data = self.data.iter().enumerate()
             .filter(|(i, r)| !removals.contains(i))
             .map(|(i, r)| r.clone()).collect::<Vec<Vec<char>>>();
 
-        DiagnosticReading {
+        Grid {
             cols: self.cols,
             rows: data.len(),
             data,
@@ -54,7 +54,7 @@ impl DiagnosticReading {
         result
     }
 
-    pub fn new(input: Vec<String>) -> DiagnosticReading {
+    pub fn new(input: Vec<String>) -> Grid {
         let mut rows: usize = 0;
         let mut cols: usize = 0;
         let mut data: Vec<Vec<char>> = Vec::new();
@@ -73,6 +73,6 @@ impl DiagnosticReading {
             })
         });
 
-        DiagnosticReading{ rows, cols, data, }
+        Grid{ rows, cols, data, }
     }
 }

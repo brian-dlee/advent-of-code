@@ -1,6 +1,6 @@
 pub mod submarine;
 pub mod utils;
-pub mod diagnostic_reading;
+pub mod grid;
 
 #[cfg(test)]
 mod tests {
