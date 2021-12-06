@@ -19,3 +19,11 @@ pub fn read_input(file: &str) -> String {
 pub fn transform_lines_to_integers(lines: &str) -> Vec<i32> {
     return lines.lines().map(|l| l.parse::<i32>().unwrap()).collect();
 }
+
+pub fn first<T: Clone>(iterable: Vec<T>) -> Option<T> {
+    for item in iterable.iter() {
+        return Some(item.clone());
+    }
+
+    return None;
+}

@@ -4,22 +4,26 @@ use std::collections::hash_set::Iter;
 use std::str::FromStr;
 use std::collections::HashSet;
 use std::iter::Map;
-use y2021::grid::{Grid, Selection};
+use y2021::bingo::Bingo;
 use y2021::utils;
 use y2021::submarine;
 
-fn parse(lines: Vec<String>) -> (Vec<u32>, Vec<Grid>) {
+fn parse(lines: Vec<String>) -> (Vec<usize>, Vec<Bingo>) {
     return (
-        lines[0].split(',').map(|c| c.parse::<u32>().unwrap()).collect(),
+        lines[0].split(',').map(|c| c.parse::<usize>().unwrap()).collect(),
         lines[1..lines.len()].iter().fold(Vec::new(), |mut result, line| {
+            let size = result.len();
+
+            println!("Line {}, Size {}", line, size);
+
             if line.trim().len() == 0 {
                 result.push(Vec::new());
             } else {
-                result[result.len() - 1].push(line.clone());
+                result[size - 1].push(line.clone());
             }
 
             return result;
-        }).map(|group| Grid::new(group)),
+        }).iter().map(|group| Bingo::new(group.clone())).collect(),
     )
 }
 
@@ -27,26 +31,39 @@ fn main() {
     println!("Starting Day 4a");
     println!("Playing Bingo.");
 
-    let (numbers, grids) = parse(
+    let (numbers, mut cards) = parse(
         utils::read_input("./input/input.txt").lines().map(|l| l.to_string()).collect::<Vec<String>>()
     );
-    let called: HashSet<u32> = HashSet::new();
-    let grid_markers: Vec<Vec<bool>> = grids.map(|grid| {
 
-    });
+    let mut call = 0;
+    let mut winner: Option<(u32, Bingo)> = None;
 
-    for number in numbers {
-        for grid in grids {
-            for x in 0..grid.rows {
-                for y in 0..grid.cols {
-                    if grid.get(x, y) == number {
+    while call < numbers.len() && winner.is_none() {
+        let number = numbers[call];
 
+        for mut card in cards.iter_mut() {
+            for x in 0..card.rows {
+                for y in 0..card.cols {
+                    if card.get(x, y) == number as u32 {
+                        card.mark(x as usize, y as usize);
                     }
                 }
             }
         }
+
+        match utils::first(cards.iter().flat_map(|x| if x.is_winning() { Some(x.clone()) } else { None }).collect::<Vec<Bingo>>()) {
+            Some(x) => { winner = Some((number as u32, x)); }
+            _ => (),
+        }
+
+        call += 1;
     }
 
-    println!("Counts: OxyGen={:?}, CO2Scrub={:?}", result.0, result.1);
-    println!("Final solution: {}", result.0 * result.1);
+    match winner {
+        Some((number, card)) => {
+            println!("Winner; WinningNumber={}, Solution={}", number, card.calculate_solution(number));
+        },
+        None => println!("No winner"),
+    }
+
 }
