@@ -23,8 +23,6 @@ fn main() {
         }
     }
 
-    // println!("{}", vent_map.draw());
-
     let solution: usize = vent_map.vents.into_iter()
         .filter(|(xy, v)| v > &1_u32).count();
 
