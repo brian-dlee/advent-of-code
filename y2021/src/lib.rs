@@ -2,6 +2,7 @@ pub mod submarine;
 pub mod utils;
 pub mod grid;
 pub mod bingo;
+pub mod ocean_vents;
 
 #[cfg(test)]
 mod tests {

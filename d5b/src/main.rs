@@ -56,7 +56,11 @@ impl Ray {
         let mut result: Vec<Coordinate> = Vec::new();
         let mut position = self.src.clone();
 
+        // println!("Finding points from {:?} to {:?}", self.src, self.dst);
+
         loop {
+            // println!(" - [{}] {},{}", result.len(), position.x, position.y);
+
             result.push(position.clone());
 
             if position == self.dst {
@@ -119,6 +123,8 @@ fn main() {
             vent_map.increment(coordinate.x, coordinate.y);
         }
     }
+
+    // println!("{}", vent_map.draw());
 
     let solution: usize = vent_map.vents.into_iter()
         .filter(|(xy, v)| v > &1_u32).count();
