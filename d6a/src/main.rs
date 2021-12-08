@@ -7,7 +7,7 @@ fn main() {
     println!("Modeling lanternfish growth.");
 
     let numbers = utils::read_input("./input/input.txt").trim()
-        .split(",").map(|l| l.parse::<u32>().unwrap()).collect::<Vec<u32>>();
+        .split(",").map(|l| l.parse::<u64>().unwrap()).collect::<Vec<u64>>();
     let days_to_simulate = 80;
 
     let mut model = SpawningModel::new(numbers);
