@@ -4,6 +4,7 @@ pub mod grid;
 pub mod bingo;
 pub mod ocean_vents;
 pub mod lanternfish;
+pub mod display_troubleshooting;
 
 #[cfg(test)]
 mod tests {
