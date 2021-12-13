@@ -5,6 +5,7 @@ pub mod bingo;
 pub mod ocean_vents;
 pub mod lanternfish;
 pub mod display_troubleshooting;
+pub mod either;
 
 #[cfg(test)]
 mod tests {
