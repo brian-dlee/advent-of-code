@@ -6,6 +6,7 @@ pub mod ocean_vents;
 pub mod lanternfish;
 pub mod display_troubleshooting;
 pub mod either;
+pub mod heightmap;
 
 #[cfg(test)]
 mod tests {
