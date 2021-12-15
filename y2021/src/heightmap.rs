@@ -17,35 +17,35 @@ pub struct HeightMap {
 }
 
 impl HeightMap {
-    pub fn get(&self, x: usize, y: usize) -> Option<u8> {
+    pub fn get(&self, x: i32, y: i32) -> Option<u8> {
         match x {
             x if x < 0 => None,
-            x if x >= self.cols => None,
+            x if x >= self.cols as i32 => None,
             x => match y {
                 y if y < 0 => None,
-                y if y >= self.rows => None,
-                y => Some(self.data[y][x].clone())
+                y if y >= self.rows as i32 => None,
+                y => Some(self.data[y as usize][x as usize].clone())
             }
         }
     }
 
-    fn get_col_adjacent(&self, col: usize, row: usize, modifier: i8) -> u8 {
+    fn get_col_adjacent(&self, col: i32, row: i32, modifier: i32) -> u8 {
         if col == 0 && modifier < 0 {
             None
         } else {
-            self.get((col as i8 + modifier) as usize, row)
+            self.get((col + modifier), row)
         }.unwrap_or(MAX)
     }
 
-    fn get_row_adjacent(&self, col: usize, row: usize, modifier: i8) -> u8 {
+    fn get_row_adjacent(&self, col: i32, row: i32, modifier: i32) -> u8 {
         if row == 0 && modifier < 0 {
             None
         } else {
-            self.get(col, (row as i8 + modifier) as usize)
+            self.get(col, (row + modifier))
         }.unwrap_or(MAX)
     }
 
-    pub fn is_low_point(&self, col: usize, row: usize) -> bool {
+    pub fn is_low_point(&self, col: i32, row: i32) -> bool {
         let value = self.get(col, row).unwrap();
         [
             self.get_col_adjacent(col, row, -1),
@@ -57,21 +57,21 @@ impl HeightMap {
         })
     }
 
-    pub fn hslice(&self, row: usize) -> Vec<u8> {
-        assert!(row >= 0 && row < self.data.len());
+    pub fn hslice(&self, row: i32) -> Vec<u8> {
+        assert!(row >= 0 && (row as usize) < self.data.len());
 
-        self.data[row].clone()
+        self.data[row as usize].clone()
     }
 
-    pub fn vslice(&self, column: usize) -> Vec<u8> {
+    pub fn vslice(&self, column: i32) -> Vec<u8> {
         assert!(column >= 0);
 
         let mut result = Vec::new();
 
         for row in &self.data {
-            assert!(column < row.len());
+            assert!((column as usize) < row.len());
 
-            result.push(row[column]);
+            result.push(row[column as usize]);
         }
 
         result
