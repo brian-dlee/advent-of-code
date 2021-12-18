@@ -18,8 +18,8 @@ impl LowPoint {
 fn scan(height_map: &HeightMap) -> Vec<(usize, usize)> {
     (0..height_map.rows).flat_map(|row| {
         let init: Vec<(usize, usize)> = Vec::new();
-        height_map.hslice(row).into_iter().enumerate().fold(init, |mut result, (col, value)| {
-            if height_map.is_low_point(col, row) {
+        height_map.hslice(row as i32).into_iter().enumerate().fold(init, |mut result, (col, value)| {
+            if height_map.is_low_point(col as i32, row as i32) {
                 result.push((col, row));
             }
             result
@@ -36,7 +36,7 @@ fn main() {
     ).unwrap();
 
     let low_points: u32 = scan(&input).into_iter().map(|coord| {
-        LowPoint { x: coord.0, y: coord.1, value: input.get(coord.0, coord.1).unwrap() }
+        LowPoint { x: coord.0, y: coord.1, value: input.get(coord.0 as i32, coord.1 as i32).unwrap() }
     }).fold(0, |result, lp| result + lp.get_risk_level() as u32);
 
     println!("Solution: {:?}", low_points);
